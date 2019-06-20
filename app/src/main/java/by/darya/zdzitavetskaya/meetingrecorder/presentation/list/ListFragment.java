@@ -14,11 +14,14 @@ import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
+import by.darya.zdzitavetskaya.meetingrecorder.adapters.RecordsAdapter;
 
 public class ListFragment extends Fragment {
 
@@ -50,6 +53,11 @@ public class ListFragment extends Fragment {
     private void setupRecycler() {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+    }
+
+    private void setupAdapter() {
+//        final RecordsAdapter adapter = new RecordsAdapter(new ArrayList<>());
+//        recyclerView.setAdapter(adapter);
     }
 
     @OnClick(R.id.floating_action_button)
