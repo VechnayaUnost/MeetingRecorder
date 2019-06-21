@@ -10,11 +10,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
+import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
+
+    private List<Record> records;
+
+    public List<Record> getRecords() {
+        return records;
+    }
+
+    public RecordsAdapter(List<Record> records) {
+        this.records = records;
+    }
 
     @NotNull
     @Override
@@ -26,12 +39,18 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        Record record = records.get(position);
 
+        holder.tvTitle.setText(record.getTitle());
+        holder.tvDate.setText(record.getDate());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (records == null) {
+            return 0;
+        }
+        return records.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
