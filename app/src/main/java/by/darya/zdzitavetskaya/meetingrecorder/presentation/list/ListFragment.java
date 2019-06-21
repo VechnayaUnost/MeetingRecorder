@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +24,9 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
 import by.darya.zdzitavetskaya.meetingrecorder.adapters.RecordsAdapter;
+import by.darya.zdzitavetskaya.meetingrecorder.room.AppDatabase;
+import by.darya.zdzitavetskaya.meetingrecorder.room.dao.RecordDao;
+import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 
 public class ListFragment extends Fragment {
 
@@ -48,6 +53,7 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupRecycler();
+        setupAdapter();
     }
 
     private void setupRecycler() {
@@ -56,8 +62,8 @@ public class ListFragment extends Fragment {
     }
 
     private void setupAdapter() {
-//        final RecordsAdapter adapter = new RecordsAdapter(new ArrayList<>());
-//        recyclerView.setAdapter(adapter);
+        final RecordsAdapter adapter = new RecordsAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
     }
 
     @OnClick(R.id.floating_action_button)
