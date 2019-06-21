@@ -1,21 +1,16 @@
 package by.darya.zdzitavetskaya.meetingrecorder.presentation.list;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,11 +19,14 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
 import by.darya.zdzitavetskaya.meetingrecorder.adapters.RecordsAdapter;
-import by.darya.zdzitavetskaya.meetingrecorder.room.AppDatabase;
-import by.darya.zdzitavetskaya.meetingrecorder.room.dao.RecordDao;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
+import moxy.MvpAppCompatFragment;
+import moxy.presenter.InjectPresenter;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends MvpAppCompatFragment implements ListView {
+
+    @InjectPresenter
+    ListPresenter listPresenter;
 
     Unbinder unbinder;
 
@@ -54,6 +52,8 @@ public class ListFragment extends Fragment {
 
         setupRecycler();
         setupAdapter();
+
+        listPresenter.getAllRecords();
     }
 
     private void setupRecycler() {
@@ -75,5 +75,11 @@ public class ListFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void showList(List<Record> records) {
+        ((RecordsAdapter) recyclerView.getAdapter()).getRecords().addAll(records);
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 }
