@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MeetingRecorder</string>
+    <string name="create_new_record">Create new record?</string>
+    <string name="create_new_record_dialog_fragment">DialogFragment</string>
 </resources>

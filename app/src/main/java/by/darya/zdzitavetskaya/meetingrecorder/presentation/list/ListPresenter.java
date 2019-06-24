@@ -3,7 +3,7 @@ package by.darya.zdzitavetskaya.meetingrecorder.presentation.list;
 import java.util.List;
 
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
-import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -18,25 +18,20 @@ public class ListPresenter extends MvpPresenter<ListView> {
         listInteractor.getAllRecordsFromDatabase()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Record>>() {
+                .subscribe(new SingleObserver<List<Record>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(List<Record> records) {
+                    public void onSuccess(List<Record> records) {
                         getViewState().showList(records);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
     }

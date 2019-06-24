@@ -19,6 +19,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
 import by.darya.zdzitavetskaya.meetingrecorder.adapters.RecordsAdapter;
+import by.darya.zdzitavetskaya.meetingrecorder.presentation.dialog.NewRecordDialogFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
@@ -68,7 +69,9 @@ public class ListFragment extends MvpAppCompatFragment implements ListView {
 
     @OnClick(R.id.floating_action_button)
     public void fabClick() {
-        //call alertdialog
+        NewRecordDialogFragment newRecordDialogFragment = new NewRecordDialogFragment();
+        newRecordDialogFragment.setCancelable(false);
+        newRecordDialogFragment.show(getFragmentManager(), getString(R.string.create_new_record_dialog_fragment));
     }
 
     @Override
