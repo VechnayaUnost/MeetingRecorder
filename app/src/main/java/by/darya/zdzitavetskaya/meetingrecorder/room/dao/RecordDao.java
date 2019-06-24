@@ -9,6 +9,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
+import io.reactivex.Single;
 
 @Dao
 public interface RecordDao {
@@ -23,5 +24,5 @@ public interface RecordDao {
     void delete(Record record);
 
     @Query("SELECT * FROM record")
-    List<Record> getAllRecords();
+    Single<List<Record>> getAllRecords();
 }

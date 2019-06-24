@@ -4,12 +4,12 @@ import java.util.List;
 
 import by.darya.zdzitavetskaya.meetingrecorder.App;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public final class ListInteractor{
 
-    public Observable<List<Record>> getAllRecordsFromDatabase() {
-        return Observable.fromCallable(() -> App.getAppDatabase().getRecordDao().getAllRecords());
+    public Single<List<Record>> getAllRecordsFromDatabase() {
+        return App.getAppDatabase().getRecordDao().getAllRecords();
     }
 
 //    public Observable<Long> insertRecord(final Record record) {
