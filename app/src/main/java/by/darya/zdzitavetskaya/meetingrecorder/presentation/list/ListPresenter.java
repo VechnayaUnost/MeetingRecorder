@@ -12,7 +12,7 @@ import moxy.MvpPresenter;
 
 @InjectViewState
 public class ListPresenter extends MvpPresenter<ListView> {
-    private ListInteractor listInteractor = new ListInteractor();
+    private final ListInteractor listInteractor = new ListInteractor();
 
     public void getAllRecords() {
         listInteractor.getAllRecordsFromDatabase()

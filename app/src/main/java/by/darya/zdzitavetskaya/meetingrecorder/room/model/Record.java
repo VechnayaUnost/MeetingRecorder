@@ -10,7 +10,6 @@ public class Record {
     private int id;
     private String title;
     private String date;
-    private String filePath;
     private String text;
 
     public int getId() {
@@ -35,14 +34,6 @@ public class Record {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 
     public String getText() {
