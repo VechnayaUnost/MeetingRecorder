@@ -19,7 +19,7 @@ import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
 
-    private List<Record> records;
+    private final List<Record> records;
 
     public List<Record> getRecords() {
         return records;

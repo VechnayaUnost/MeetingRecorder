@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class ListFragment extends MvpAppCompatFragment implements ListView {
     @InjectPresenter
     ListPresenter listPresenter;
 
-    Unbinder unbinder;
+    private Unbinder unbinder;
 
     @BindView(R.id.rv_records)
     RecyclerView recyclerView;
@@ -40,7 +42,7 @@ public class ListFragment extends MvpAppCompatFragment implements ListView {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -68,7 +70,7 @@ public class ListFragment extends MvpAppCompatFragment implements ListView {
     }
 
     @OnClick(R.id.floating_action_button)
-    public void fabClick() {
+    void fabClick() {
         NewRecordDialogFragment newRecordDialogFragment = new NewRecordDialogFragment();
         newRecordDialogFragment.setCancelable(false);
         newRecordDialogFragment.show(getFragmentManager(), getString(R.string.create_new_record_dialog_fragment));

@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -35,10 +37,19 @@ public class RecordFragment extends MvpAppCompatFragment {
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+    private final String [] permissions = {Manifest.permission.RECORD_AUDIO};
 
-    @BindView(R.id.tv_meeting_speech)
-    TextView tvMeetingSpeech;
+    @BindView(R.id.et_meeting_speech)
+    EditText etMeetingSpeech;
+
+    @BindView(R.id.btn_start)
+    ImageButton btnStart;
+
+    @BindView(R.id.btn_pause)
+    ImageButton btnPause;
+
+    @BindView(R.id.btn_save)
+    Button btnSave;
 
     private Unbinder unbinder;
     private SpeechRecognizer speech;
@@ -48,7 +59,7 @@ public class RecordFragment extends MvpAppCompatFragment {
     private AudioManager audioManager;
     private int streamVolume = 0;
 
-    private StringBuilder str = new StringBuilder();
+    private final StringBuilder str = new StringBuilder();
 
     public RecordFragment() {
         // Required empty public constructor
@@ -71,6 +82,9 @@ public class RecordFragment extends MvpAppCompatFragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_record, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        btnPause.setEnabled(false);
+        btnSave.setEnabled(false);
         return view;
     }
 
@@ -161,7 +175,8 @@ public class RecordFragment extends MvpAppCompatFragment {
 
                 if (matches != null) {
                     str.append(matches.get(0)).append(" ");
-                    tvMeetingSpeech.setText(str);
+                    etMeetingSpeech.setText(str);
+                    btnSave.setEnabled(true);
                 }
             }
 
@@ -192,19 +207,25 @@ public class RecordFragment extends MvpAppCompatFragment {
         speech.startListening(recognizerIntent);
         streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+        btnStart.setEnabled(false);
+        btnPause.setEnabled(true);
     }
 
-    @OnClick(R.id.btn_stop)
+    @OnClick(R.id.btn_pause)
     void recordStop() {
         isListening = false;
         speech.stopListening();
+        btnStart.setEnabled(true);
+        btnPause.setEnabled(false);
     }
 
-    @OnClick
+    @OnClick(R.id.btn_save)
     void saveRecord() {
         isListening = false;
         speech.stopListening();
-        //save record in DB
+        btnStart.setEnabled(true);
+        btnPause.setEnabled(false);
+        //TODO: save record in DB
     }
 
     @Override

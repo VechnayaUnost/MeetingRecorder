@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.jetbrains.annotations.NotNull;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -21,7 +23,7 @@ public class NewRecordDialogFragment extends MvpAppCompatDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_new_record_dialog, container, false);
 
@@ -31,14 +33,16 @@ public class NewRecordDialogFragment extends MvpAppCompatDialogFragment {
     }
 
     @OnClick(R.id.btn_OK)
-    public void showNewRecordFragment(){
+    void showNewRecordFragment(){
         unbinder.unbind();
         dismiss();
-        getFragmentManager().beginTransaction().replace(R.id.fl_main_container, new RecordFragment()).commit();
+        if (getFragmentManager() != null) {
+            getFragmentManager().beginTransaction().replace(R.id.fl_main_container, new RecordFragment()).addToBackStack(null).commit();
+        }
     }
 
     @OnClick(R.id.btn_cancel)
-    public void cancelDialog() {
+    void cancelDialog() {
         unbinder.unbind();
         dismiss();
     }
