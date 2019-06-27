@@ -1,7 +1,8 @@
 package by.darya.zdzitavetskaya.meetingrecorder;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.list.ListFragment;
 

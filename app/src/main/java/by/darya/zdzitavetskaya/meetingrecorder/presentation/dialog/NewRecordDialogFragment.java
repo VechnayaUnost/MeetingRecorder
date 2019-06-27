@@ -9,6 +9,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
+import by.darya.zdzitavetskaya.meetingrecorder.presentation.record.RecordFragment;
 import moxy.MvpAppCompatDialogFragment;
 
 public class NewRecordDialogFragment extends MvpAppCompatDialogFragment {
@@ -31,7 +32,9 @@ public class NewRecordDialogFragment extends MvpAppCompatDialogFragment {
 
     @OnClick(R.id.btn_OK)
     public void showNewRecordFragment(){
-        //create new record
+        unbinder.unbind();
+        dismiss();
+        getFragmentManager().beginTransaction().replace(R.id.fl_main_container, new RecordFragment()).commit();
     }
 
     @OnClick(R.id.btn_cancel)
