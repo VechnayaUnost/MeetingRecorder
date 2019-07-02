@@ -1,5 +1,6 @@
 package by.darya.zdzitavetskaya.meetingrecorder.presentation.meeting;
 
+import by.darya.zdzitavetskaya.meetingrecorder.presentation.BaseMvpPresenter;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 import io.reactivex.CompletableObserver;
 import io.reactivex.SingleObserver;
@@ -10,17 +11,17 @@ import moxy.InjectViewState;
 import moxy.MvpPresenter;
 
 @InjectViewState
-public class MeetingPresenter extends MvpPresenter<MeetingView> {
+public class MeetingPresenter extends MvpPresenter<MeetingView> implements BaseMvpPresenter {
     private final MeetingInteractor meetingInteractor = new MeetingInteractor();
 
-    public void getRecord(final int id) {
+    public void getRecord(final Long id) {
         meetingInteractor.getRecordById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Record>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -30,19 +31,19 @@ public class MeetingPresenter extends MvpPresenter<MeetingView> {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
                 });
     }
 
-    void insertRecord(Record record) {
-        meetingInteractor.insertRecord(record)
+    void updateRecord(Record record) {
+        meetingInteractor.updateRecord(record)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -57,25 +58,9 @@ public class MeetingPresenter extends MvpPresenter<MeetingView> {
                 });
     }
 
-    void updateRecord(Record record) {
-        meetingInteractor.updateRecord(record)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        onDestroyPresenter();
     }
 }

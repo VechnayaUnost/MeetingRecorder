@@ -18,10 +18,6 @@ public class NewRecordDialogFragment extends MvpAppCompatDialogFragment {
 
     private Unbinder unbinder;
 
-    public NewRecordDialogFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,7 +33,11 @@ public class NewRecordDialogFragment extends MvpAppCompatDialogFragment {
         unbinder.unbind();
         dismiss();
         if (getFragmentManager() != null) {
-            getFragmentManager().beginTransaction().replace(R.id.fl_main_container, new RecordFragment()).addToBackStack(null).commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fl_main_container, new RecordFragment())
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 

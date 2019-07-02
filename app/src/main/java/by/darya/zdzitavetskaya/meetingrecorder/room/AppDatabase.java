@@ -11,7 +11,7 @@ import by.darya.zdzitavetskaya.meetingrecorder.room.dao.WordDao;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Word;
 
-@Database(entities = {Record.class, Word.class}, version = 1)
+@Database(entities = {Record.class, Word.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract RecordDao getRecordDao();
@@ -25,6 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "app_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

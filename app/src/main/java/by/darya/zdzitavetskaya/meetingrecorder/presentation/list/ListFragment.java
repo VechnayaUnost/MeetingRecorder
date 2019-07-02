@@ -1,53 +1,37 @@
 package by.darya.zdzitavetskaya.meetingrecorder.presentation.list;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
 import by.darya.zdzitavetskaya.meetingrecorder.adapters.RecordsAdapter;
+import by.darya.zdzitavetskaya.meetingrecorder.presentation.BaseFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.dialog.NewRecordDialogFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.meeting.MeetingFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
-import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 
-public class ListFragment extends MvpAppCompatFragment implements ListView, RecordsAdapter.Listener {
+public class ListFragment extends BaseFragment implements ListView, RecordsAdapter.Listener {
 
     @InjectPresenter
     ListPresenter listPresenter;
 
-    private Unbinder unbinder;
-
     @BindView(R.id.rv_records)
     RecyclerView recyclerView;
 
-    public ListFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
+    public int getLayoutFragment() {
+        return R.layout.fragment_list;
     }
 
     @Override
@@ -56,13 +40,6 @@ public class ListFragment extends MvpAppCompatFragment implements ListView, Reco
 
         setupRecycler();
         setupAdapter();
-
-//        Record record = new Record();
-//        record.setId(23);
-//        record.setTitle("ffgk");
-//        record.setText("kdkfs;");
-//        record.setDate(new Date().toString());
-//        listPresenter.insertRecord(record);
 
         listPresenter.getAllRecords();
     }
@@ -85,21 +62,18 @@ public class ListFragment extends MvpAppCompatFragment implements ListView, Reco
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
     public void showList(List<Record> records) {
-        ((RecordsAdapter) recyclerView.getAdapter()).getRecords().addAll(records);
-        recyclerView.getAdapter().notifyDataSetChanged();
+        ((RecordsAdapter) recyclerView.getAdapter()).setItems(records);
     }
 
     @Override
-    public void onItemClick(int id) {
+    public void onItemClick(Long id) {
         if (getFragmentManager() != null) {
-            getFragmentManager().beginTransaction().replace(R.id.fl_main_container, new MeetingFragment(id)).addToBackStack(null).commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fl_main_container, MeetingFragment.newInstance(id))
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 }

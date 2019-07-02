@@ -21,7 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_date"
-        android:inputType="textShortMessage"
+        android:inputType="textMultiLine|textCapCharacters"
+        android:maxLength="25"
         android:hint="@string/title"
         />
 

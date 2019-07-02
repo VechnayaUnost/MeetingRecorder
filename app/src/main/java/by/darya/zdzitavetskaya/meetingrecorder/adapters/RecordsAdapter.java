@@ -20,7 +20,7 @@ import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
 
     private final List<Record> records;
-    private Listener listener;
+    private final Listener listener;
 
     public List<Record> getRecords() {
         return records;
@@ -55,7 +55,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         return records.size();
     }
 
-    public void addItems(List<Record> newItems) {
+    private void addItems(List<Record> newItems) {
         records.addAll(newItems);
 
         notifyDataSetChanged();
@@ -71,7 +71,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
     }
 
     public interface Listener {
-        void onItemClick(int id);
+        void onItemClick(Long id);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

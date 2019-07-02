@@ -10,35 +10,36 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
+import by.darya.zdzitavetskaya.meetingrecorder.presentation.BaseFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.list.ListFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.meeting.MeetingFragment;
-import moxy.MvpAppCompatFragment;
+import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
+import moxy.presenter.InjectPresenter;
 
-public class RecordFragment extends MvpAppCompatFragment {
+public class RecordFragment extends BaseFragment implements RecordView{
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
     private final String [] permissions = {Manifest.permission.RECORD_AUDIO};
+
+    @InjectPresenter
+    RecordPresenter recordPresenter;
 
     @BindView(R.id.et_meeting_speech)
     EditText etMeetingSpeech;
@@ -52,7 +53,9 @@ public class RecordFragment extends MvpAppCompatFragment {
     @BindView(R.id.btn_save)
     Button btnSave;
 
-    private Unbinder unbinder;
+    @BindView(R.id.et_meeting_title)
+    EditText etMeetingTitle;
+
     private SpeechRecognizer speech;
     private Intent recognizerIntent;
     private boolean isListening = false;
@@ -61,10 +64,7 @@ public class RecordFragment extends MvpAppCompatFragment {
     private int streamVolume = 0;
 
     private final StringBuilder str = new StringBuilder();
-
-    public RecordFragment() {
-        // Required empty public constructor
-    }
+    private Record record;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,14 +79,16 @@ public class RecordFragment extends MvpAppCompatFragment {
     }
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_record, container, false);
-        unbinder = ButterKnife.bind(this, view);
+    public int getLayoutFragment() {
+        return R.layout.fragment_record;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         btnPause.setEnabled(false);
-        btnSave.setEnabled(false);
-        return view;
+        recordPresenter.setButtonEnabled(etMeetingTitle, etMeetingSpeech);
     }
 
     @Override
@@ -177,7 +179,6 @@ public class RecordFragment extends MvpAppCompatFragment {
                 if (matches != null) {
                     str.append(matches.get(0)).append(" ");
                     etMeetingSpeech.setText(str);
-                    btnSave.setEnabled(true);
                 }
             }
 
@@ -227,19 +228,32 @@ public class RecordFragment extends MvpAppCompatFragment {
         btnStart.setEnabled(true);
         btnPause.setEnabled(false);
 
+        record = new Record();
+        record.setDate(new Date().toString());
+        record.setText(etMeetingSpeech.getText().toString());
+        record.setTitle(etMeetingTitle.getText().toString());
+
+        recordPresenter.insertRecord(record);
+    }
+
+    @Override
+    public void onRecordSaved(Long id) {
         if (getFragmentManager() != null) {
             getFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fl_main_container, new MeetingFragment(etMeetingSpeech.getText().toString()))
-                    .addToBackStack(null)
+                    .replace(R.id.fl_main_container, MeetingFragment.newInstance(id))
                     .commit();
         }
+    }
+
+    @Override
+    public void buttonEnabled(Boolean enabled) {
+        btnSave.setEnabled(enabled);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         speech.destroy();
-        unbinder.unbind();
     }
 }

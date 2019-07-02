@@ -17,7 +17,7 @@ import io.reactivex.Single;
 public interface RecordDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insert(Record record);
+    Single<Long> insert(Record record);
 
     @Update
     Completable update(Record record);
@@ -29,5 +29,5 @@ public interface RecordDao {
     Single<List<Record>> getAllRecords();
 
     @Query("SELECT * FROM record WHERE id=:id")
-    Single<Record> getRecordById(final int id);
+    Single<Record> getRecordById(final Long id);
 }
