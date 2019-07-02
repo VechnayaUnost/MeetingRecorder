@@ -11,8 +11,4 @@ public final class ListInteractor{
     public Single<List<Record>> getAllRecordsFromDatabase() {
         return App.getAppDatabase().getRecordDao().getAllRecords();
     }
-
-//    public Observable<Long> insertRecord(final Record record) {
-//        return Observable.fromCallable(() -> App.getAppDatabase().getRecordDao().insert(record));
-//    }
 }

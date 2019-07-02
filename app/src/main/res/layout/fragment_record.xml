@@ -7,9 +7,19 @@
     >
 
     <EditText
+        android:id="@+id/et_meeting_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/title"
+        android:inputType="textMultiLine|textCapCharacters"
+        android:maxLength="25"
+        />
+
+    <EditText
         android:id="@+id/et_meeting_speech"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/et_meeting_title"
         android:layout_above="@id/rl_button_container"
         android:layout_marginBottom="10dp"
         android:gravity="top|start"

@@ -13,18 +13,18 @@ import static androidx.room.ForeignKey.CASCADE;
         onUpdate = CASCADE))
 public class Word {
 
-    @PrimaryKey
-    private int id;
+    @PrimaryKey(autoGenerate = true)
+    private Long id;
     private int position;
     private String word;
     private String color;
-    private int recordId;
+    private Long recordId;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,11 +52,11 @@ public class Word {
         this.color = color;
     }
 
-    public int getRecordId() {
+    public Long getRecordId() {
         return recordId;
     }
 
-    public void setRecordId(int recordId) {
+    public void setRecordId(Long recordId) {
         this.recordId = recordId;
     }
 }
