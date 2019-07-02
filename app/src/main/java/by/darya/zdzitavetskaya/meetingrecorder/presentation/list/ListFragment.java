@@ -22,11 +22,12 @@ import butterknife.Unbinder;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
 import by.darya.zdzitavetskaya.meetingrecorder.adapters.RecordsAdapter;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.dialog.NewRecordDialogFragment;
+import by.darya.zdzitavetskaya.meetingrecorder.presentation.meeting.MeetingFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 
-public class ListFragment extends MvpAppCompatFragment implements ListView {
+public class ListFragment extends MvpAppCompatFragment implements ListView, RecordsAdapter.Listener {
 
     @InjectPresenter
     ListPresenter listPresenter;
@@ -56,6 +57,13 @@ public class ListFragment extends MvpAppCompatFragment implements ListView {
         setupRecycler();
         setupAdapter();
 
+//        Record record = new Record();
+//        record.setId(23);
+//        record.setTitle("ffgk");
+//        record.setText("kdkfs;");
+//        record.setDate(new Date().toString());
+//        listPresenter.insertRecord(record);
+
         listPresenter.getAllRecords();
     }
 
@@ -65,7 +73,7 @@ public class ListFragment extends MvpAppCompatFragment implements ListView {
     }
 
     private void setupAdapter() {
-        final RecordsAdapter adapter = new RecordsAdapter(new ArrayList<>());
+        final RecordsAdapter adapter = new RecordsAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -86,5 +94,12 @@ public class ListFragment extends MvpAppCompatFragment implements ListView {
     public void showList(List<Record> records) {
         ((RecordsAdapter) recyclerView.getAdapter()).getRecords().addAll(records);
         recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(int id) {
+        if (getFragmentManager() != null) {
+            getFragmentManager().beginTransaction().replace(R.id.fl_main_container, new MeetingFragment(id)).addToBackStack(null).commit();
+        }
     }
 }

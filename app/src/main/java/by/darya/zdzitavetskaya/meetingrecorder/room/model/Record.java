@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Record {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
     private String date;

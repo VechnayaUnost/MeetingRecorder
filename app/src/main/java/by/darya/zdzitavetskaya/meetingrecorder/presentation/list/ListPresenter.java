@@ -35,26 +35,4 @@ public class ListPresenter extends MvpPresenter<ListView> {
                     }
                 });
     }
-
-//    public void insertRecord(Record record) {
-//        Completable.fromAction(() -> App.getAppDatabase().getRecordDao().insert(record))
-//                .observeOn(Schedulers.io())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(new CompletableObserver() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        Log.d("GOOD", "succsessfull");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        e.printStackTrace();
-//                    }
-//                });
-//    }
 }

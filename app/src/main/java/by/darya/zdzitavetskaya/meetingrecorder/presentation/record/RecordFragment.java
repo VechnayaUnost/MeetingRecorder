@@ -31,6 +31,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import by.darya.zdzitavetskaya.meetingrecorder.R;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.list.ListFragment;
+import by.darya.zdzitavetskaya.meetingrecorder.presentation.meeting.MeetingFragment;
 import moxy.MvpAppCompatFragment;
 
 public class RecordFragment extends MvpAppCompatFragment {
@@ -225,7 +226,14 @@ public class RecordFragment extends MvpAppCompatFragment {
         speech.stopListening();
         btnStart.setEnabled(true);
         btnPause.setEnabled(false);
-        //TODO: save record in DB
+
+        if (getFragmentManager() != null) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fl_main_container, new MeetingFragment(etMeetingSpeech.getText().toString()))
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     @Override

@@ -20,12 +20,14 @@ import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
 
     private final List<Record> records;
+    private Listener listener;
 
     public List<Record> getRecords() {
         return records;
     }
 
-    public RecordsAdapter(List<Record> records) {
+    public RecordsAdapter(List<Record> records, final Listener listener) {
+        this.listener = listener;
         this.records = records;
     }
 
@@ -53,6 +55,25 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         return records.size();
     }
 
+    public void addItems(List<Record> newItems) {
+        records.addAll(newItems);
+
+        notifyDataSetChanged();
+    }
+
+    public void setItems(List<Record> items) {
+        clearList();
+        addItems(items);
+    }
+
+    private void clearList() {
+        records.clear();
+    }
+
+    public interface Listener {
+        void onItemClick(int id);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_item_title)
@@ -65,6 +86,12 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
             super(view);
 
             ButterKnife.bind(this, view);
+
+            view.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClick(records.get(getAdapterPosition()).getId());
+                }
+            });
         }
     }
 }
