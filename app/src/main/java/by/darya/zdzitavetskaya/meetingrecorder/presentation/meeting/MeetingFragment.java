@@ -30,10 +30,10 @@ public class MeetingFragment extends BaseFragment implements MeetingView{
     @BindView(R.id.et_text)
     EditText etText;
 
-    public static MeetingFragment newInstance(Long id) {
-        MeetingFragment meetingFragment = new MeetingFragment();
+    public static MeetingFragment newInstance(final Long id) {
+        final MeetingFragment meetingFragment = new MeetingFragment();
 
-        Bundle args = new Bundle();
+        final Bundle args = new Bundle();
         args.putLong(ARG_ID, id);
         meetingFragment.setArguments(args);
 
@@ -41,7 +41,7 @@ public class MeetingFragment extends BaseFragment implements MeetingView{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             id = getArguments().getLong(ARG_ID);
@@ -64,7 +64,7 @@ public class MeetingFragment extends BaseFragment implements MeetingView{
     }
 
     @Override
-    public void onRecordSuccess(Record record) {
+    public void onRecordSuccess(final Record record) {
         this.record = record;
         tvDate.setText(record.getDate());
         etTitle.setText(record.getTitle());

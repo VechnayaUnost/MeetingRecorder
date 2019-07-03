@@ -26,7 +26,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         return records;
     }
 
-    public RecordsAdapter(List<Record> records, final Listener listener) {
+    public RecordsAdapter(final List<Record> records, final Listener listener) {
         this.listener = listener;
         this.records = records;
     }
@@ -34,14 +34,14 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NotNull final ViewGroup parent, final int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.record_item_recycler, parent, false);
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.record_item_recycler, parent, false);
 
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        Record record = records.get(position);
+        final Record record = records.get(position);
 
         holder.tvTitle.setText(record.getTitle());
         holder.tvDate.setText(record.getDate());
@@ -55,13 +55,13 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         return records.size();
     }
 
-    private void addItems(List<Record> newItems) {
+    private void addItems(final List<Record> newItems) {
         records.addAll(newItems);
 
         notifyDataSetChanged();
     }
 
-    public void setItems(List<Record> items) {
+    public void setItems(final List<Record> items) {
         clearList();
         addItems(items);
     }
@@ -82,7 +82,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         @BindView(R.id.tv_item_date)
         TextView tvDate;
 
-        ViewHolder(View view) {
+        ViewHolder(final View view) {
             super(view);
 
             ButterKnife.bind(this, view);

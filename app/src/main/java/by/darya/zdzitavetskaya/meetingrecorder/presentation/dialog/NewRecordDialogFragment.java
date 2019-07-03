@@ -19,8 +19,8 @@ public class NewRecordDialogFragment extends MvpAppCompatDialogFragment {
     private Unbinder unbinder;
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NotNull final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_new_record_dialog, container, false);
 
         unbinder = ButterKnife.bind(this, view);

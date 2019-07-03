@@ -67,7 +67,7 @@ public class RecordFragment extends BaseFragment implements RecordView{
     private Record record;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ActivityCompat.requestPermissions(getActivity(), permissions, REQUEST_RECORD_AUDIO_PERMISSION);
@@ -84,7 +84,7 @@ public class RecordFragment extends BaseFragment implements RecordView{
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         btnPause.setEnabled(false);
@@ -92,7 +92,7 @@ public class RecordFragment extends BaseFragment implements RecordView{
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
             permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
@@ -106,7 +106,7 @@ public class RecordFragment extends BaseFragment implements RecordView{
         speech = SpeechRecognizer.createSpeechRecognizer(getContext());
         speech.setRecognitionListener(new RecognitionListener() {
             @Override
-            public void onReadyForSpeech(Bundle params) {
+            public void onReadyForSpeech(final Bundle params) {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, streamVolume, 0);
             }
 
@@ -116,12 +116,12 @@ public class RecordFragment extends BaseFragment implements RecordView{
             }
 
             @Override
-            public void onRmsChanged(float rmsdB) {
+            public void onRmsChanged(final float rmsdB) {
 
             }
 
             @Override
-            public void onBufferReceived(byte[] buffer) {
+            public void onBufferReceived(final byte[] buffer) {
 
             }
 
@@ -132,8 +132,8 @@ public class RecordFragment extends BaseFragment implements RecordView{
             }
 
             @Override
-            public void onError(int error) {
-                String message;
+            public void onError(final int error) {
+                final String message;
 
                 switch (error) {
                     case SpeechRecognizer.ERROR_AUDIO:
@@ -173,8 +173,8 @@ public class RecordFragment extends BaseFragment implements RecordView{
             }
 
             @Override
-            public void onResults(Bundle results) {
-                ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            public void onResults(final Bundle results) {
+                final ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
                 if (matches != null) {
                     str.append(matches.get(0)).append(" ");
@@ -183,12 +183,12 @@ public class RecordFragment extends BaseFragment implements RecordView{
             }
 
             @Override
-            public void onPartialResults(Bundle partialResults) {
+            public void onPartialResults(final Bundle partialResults) {
 
             }
 
             @Override
-            public void onEvent(int eventType, Bundle params) {
+            public void onEvent(final int eventType, final Bundle params) {
 
             }
         });
@@ -237,7 +237,7 @@ public class RecordFragment extends BaseFragment implements RecordView{
     }
 
     @Override
-    public void onRecordSaved(Long id) {
+    public void onRecordSaved(final Long id) {
         if (getFragmentManager() != null) {
             getFragmentManager()
                     .beginTransaction()
@@ -247,7 +247,7 @@ public class RecordFragment extends BaseFragment implements RecordView{
     }
 
     @Override
-    public void buttonEnabled(Boolean enabled) {
+    public void buttonEnabled(final Boolean enabled) {
         btnSave.setEnabled(enabled);
     }
 

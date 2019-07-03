@@ -2,6 +2,9 @@ package by.darya.zdzitavetskaya.meetingrecorder.presentation.list;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import by.darya.zdzitavetskaya.meetingrecorder.App;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.BaseMvpPresenter;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 import io.reactivex.SingleObserver;
@@ -13,7 +16,13 @@ import moxy.MvpPresenter;
 
 @InjectViewState
 public class ListPresenter extends MvpPresenter<ListView> implements BaseMvpPresenter {
-    private final ListInteractor listInteractor = new ListInteractor();
+
+    @Inject
+    ListInteractor listInteractor;
+
+    public ListPresenter() {
+        App.getAppComponent().inject(this);
+    }
 
     public void getAllRecords() {
         listInteractor.getAllRecordsFromDatabase()
@@ -21,17 +30,17 @@ public class ListPresenter extends MvpPresenter<ListView> implements BaseMvpPres
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Record>>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onSubscribe(final Disposable d) {
                         compositeDisposable.add(d);
                     }
 
                     @Override
-                    public void onSuccess(List<Record> records) {
+                    public void onSuccess(final List<Record> records) {
                         getViewState().showList(records);
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(final Throwable e) {
                         e.printStackTrace();
                     }
                 });

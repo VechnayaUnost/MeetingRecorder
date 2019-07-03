@@ -35,7 +35,7 @@ public class ListFragment extends BaseFragment implements ListView, RecordsAdapt
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         setupRecycler();
@@ -56,18 +56,18 @@ public class ListFragment extends BaseFragment implements ListView, RecordsAdapt
 
     @OnClick(R.id.floating_action_button)
     void fabClick() {
-        NewRecordDialogFragment newRecordDialogFragment = new NewRecordDialogFragment();
+        final NewRecordDialogFragment newRecordDialogFragment = new NewRecordDialogFragment();
         newRecordDialogFragment.setCancelable(false);
         newRecordDialogFragment.show(getFragmentManager(), getString(R.string.create_new_record_dialog_fragment));
     }
 
     @Override
-    public void showList(List<Record> records) {
+    public void showList(final List<Record> records) {
         ((RecordsAdapter) recyclerView.getAdapter()).setItems(records);
     }
 
     @Override
-    public void onItemClick(Long id) {
+    public void onItemClick(final Long id) {
         if (getFragmentManager() != null) {
             getFragmentManager()
                     .beginTransaction()

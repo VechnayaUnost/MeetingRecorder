@@ -24,7 +24,7 @@ public class Word {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -32,7 +32,7 @@ public class Word {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(final int position) {
         this.position = position;
     }
 
@@ -40,7 +40,7 @@ public class Word {
         return word;
     }
 
-    public void setWord(String word) {
+    public void setWord(final String word) {
         this.word = word;
     }
 
@@ -48,7 +48,7 @@ public class Word {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(final String color) {
         this.color = color;
     }
 
@@ -56,7 +56,7 @@ public class Word {
         return recordId;
     }
 
-    public void setRecordId(Long recordId) {
+    public void setRecordId(final Long recordId) {
         this.recordId = recordId;
     }
 }

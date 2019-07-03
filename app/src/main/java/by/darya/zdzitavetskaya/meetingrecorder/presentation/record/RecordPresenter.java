@@ -4,6 +4,9 @@ import android.widget.EditText;
 
 import com.jakewharton.rxbinding3.widget.RxTextView;
 
+import javax.inject.Inject;
+
+import by.darya.zdzitavetskaya.meetingrecorder.App;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.BaseMvpPresenter;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 import io.reactivex.Observable;
@@ -17,36 +20,42 @@ import moxy.MvpPresenter;
 
 @InjectViewState
 public class RecordPresenter extends MvpPresenter<RecordView> implements BaseMvpPresenter {
-    private final RecordInteractor recordInteractor = new RecordInteractor();
 
-    void insertRecord(Record record) {
+    @Inject
+    RecordInteractor recordInteractor;
+
+    public RecordPresenter() {
+        App.getAppComponent().inject(this);
+    }
+
+    void insertRecord(final Record record) {
         recordInteractor.insertRecord(record)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new SingleObserver<Long>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onSubscribe(final Disposable d) {
                         compositeDisposable.add(d);
                     }
 
                     @Override
-                    public void onSuccess(Long aLong) {
+                    public void onSuccess(final Long aLong) {
                         getViewState().onRecordSaved(aLong);
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(final Throwable e) {
                         e.printStackTrace();
                     }
                 });
     }
 
-    void setButtonEnabled(EditText etMeetingTitle, EditText etMeetingSpeech){
-        Observable<String> title = RxTextView
+    void setButtonEnabled(final EditText etMeetingTitle, final EditText etMeetingSpeech){
+        final Observable<String> title = RxTextView
                 .textChanges(etMeetingTitle)
                 .switchMap(charSequence -> Observable.just(charSequence.toString()));
 
-        Observable<String> text = RxTextView
+        final Observable<String> text = RxTextView
                 .textChanges(etMeetingSpeech)
                 .switchMap(charSequence -> Observable.just(charSequence.toString()));
 
@@ -55,17 +64,17 @@ public class RecordPresenter extends MvpPresenter<RecordView> implements BaseMvp
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Boolean>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onSubscribe(final Disposable d) {
                         compositeDisposable.add(d);
                     }
 
                     @Override
-                    public void onNext(Boolean enabled) {
+                    public void onNext(final Boolean enabled) {
                         getViewState().buttonEnabled(enabled);
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(final Throwable e) {
                         e.printStackTrace();
                     }
 

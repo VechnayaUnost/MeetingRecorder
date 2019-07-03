@@ -1,5 +1,8 @@
 package by.darya.zdzitavetskaya.meetingrecorder.presentation.meeting;
 
+import javax.inject.Inject;
+
+import by.darya.zdzitavetskaya.meetingrecorder.App;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.BaseMvpPresenter;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
 import io.reactivex.CompletableObserver;
@@ -12,7 +15,13 @@ import moxy.MvpPresenter;
 
 @InjectViewState
 public class MeetingPresenter extends MvpPresenter<MeetingView> implements BaseMvpPresenter {
-    private final MeetingInteractor meetingInteractor = new MeetingInteractor();
+
+    @Inject
+    MeetingInteractor meetingInteractor;
+
+    public MeetingPresenter() {
+        App.getAppComponent().inject(this);
+    }
 
     public void getRecord(final Long id) {
         meetingInteractor.getRecordById(id)
@@ -20,29 +29,29 @@ public class MeetingPresenter extends MvpPresenter<MeetingView> implements BaseM
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Record>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onSubscribe(final Disposable d) {
                         compositeDisposable.add(d);
                     }
 
                     @Override
-                    public void onSuccess(Record record) {
+                    public void onSuccess(final Record record) {
                         getViewState().onRecordSuccess(record);
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(final Throwable e) {
                         e.printStackTrace();
                     }
                 });
     }
 
-    void updateRecord(Record record) {
+    void updateRecord(final Record record) {
         meetingInteractor.updateRecord(record)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new CompletableObserver() {
                     @Override
-                    public void onSubscribe(Disposable d) {
+                    public void onSubscribe(final Disposable d) {
                         compositeDisposable.add(d);
                     }
 
@@ -52,7 +61,7 @@ public class MeetingPresenter extends MvpPresenter<MeetingView> implements BaseM
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(final Throwable e) {
                         e.printStackTrace();
                     }
                 });
