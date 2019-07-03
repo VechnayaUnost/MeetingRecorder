@@ -10,10 +10,10 @@ import by.darya.zdzitavetskaya.meetingrecorder.R;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.BaseFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.list.ListFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
+import by.darya.zdzitavetskaya.meetingrecorder.utils.AppConstants;
 import moxy.presenter.InjectPresenter;
 
 public class MeetingFragment extends BaseFragment implements MeetingView{
-    private static final String ARG_ID = "id";
 
     private Record record;
     private Long id;
@@ -34,7 +34,7 @@ public class MeetingFragment extends BaseFragment implements MeetingView{
         final MeetingFragment meetingFragment = new MeetingFragment();
 
         final Bundle args = new Bundle();
-        args.putLong(ARG_ID, id);
+        args.putLong(AppConstants.ARG_ID, id);
         meetingFragment.setArguments(args);
 
         return meetingFragment;
@@ -44,7 +44,7 @@ public class MeetingFragment extends BaseFragment implements MeetingView{
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            id = getArguments().getLong(ARG_ID);
+            id = getArguments().getLong(AppConstants.ARG_ID);
         }
 
         meetingPresenter.getRecord(id);

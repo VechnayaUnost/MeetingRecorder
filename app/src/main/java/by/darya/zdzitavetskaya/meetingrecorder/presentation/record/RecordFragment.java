@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,11 +29,12 @@ import by.darya.zdzitavetskaya.meetingrecorder.presentation.BaseFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.list.ListFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.presentation.meeting.MeetingFragment;
 import by.darya.zdzitavetskaya.meetingrecorder.room.model.Record;
+import by.darya.zdzitavetskaya.meetingrecorder.utils.AppConstants;
+import by.darya.zdzitavetskaya.meetingrecorder.utils.DateUtils;
 import moxy.presenter.InjectPresenter;
 
 public class RecordFragment extends BaseFragment implements RecordView{
 
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
     private final String [] permissions = {Manifest.permission.RECORD_AUDIO};
 
@@ -70,7 +70,7 @@ public class RecordFragment extends BaseFragment implements RecordView{
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityCompat.requestPermissions(getActivity(), permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+        ActivityCompat.requestPermissions(getActivity(), permissions, AppConstants.REQUEST_RECORD_AUDIO_PERMISSION);
 
         setupRecognitionListener();
         createIntent();
@@ -94,7 +94,7 @@ public class RecordFragment extends BaseFragment implements RecordView{
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
+        if (requestCode == AppConstants.REQUEST_RECORD_AUDIO_PERMISSION) {
             permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
         }
         if (!permissionToRecordAccepted ) {
@@ -133,41 +133,6 @@ public class RecordFragment extends BaseFragment implements RecordView{
 
             @Override
             public void onError(final int error) {
-                final String message;
-
-                switch (error) {
-                    case SpeechRecognizer.ERROR_AUDIO:
-                        message = "audio";
-                        break;
-                    case SpeechRecognizer.ERROR_CLIENT:
-                        message = "client";
-                        break;
-                    case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
-                        message = "insufficient permissions";
-                        break;
-                    case SpeechRecognizer.ERROR_NETWORK:
-                        message = "network";
-                        break;
-                    case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
-                        message = "network timeout";
-                        break;
-                    case SpeechRecognizer.ERROR_NO_MATCH:
-                        message = "no match found";
-                        break;
-                    case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
-                        message = "recognizer busy";
-                        break;
-                    case SpeechRecognizer.ERROR_SERVER:
-                        message = "server";
-                        break;
-                    case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
-                        message = "speech timeout";
-                        break;
-                    default:
-                        message = "error understand";
-                        break;
-                }
-                Log.d("error ", message);
                 if (isListening)
                     recordStart();
             }
@@ -229,7 +194,7 @@ public class RecordFragment extends BaseFragment implements RecordView{
         btnPause.setEnabled(false);
 
         record = new Record();
-        record.setDate(new Date().toString());
+        record.setDate(DateUtils.getFormatDate(new Date()));
         record.setText(etMeetingSpeech.getText().toString());
         record.setTitle(etMeetingTitle.getText().toString());
 

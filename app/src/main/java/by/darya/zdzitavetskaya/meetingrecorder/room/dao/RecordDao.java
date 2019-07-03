@@ -25,7 +25,7 @@ public interface RecordDao {
     @Delete
     Completable delete(Record record);
 
-    @Query("SELECT * FROM record")
+    @Query("SELECT * FROM record ORDER BY date ASC")
     Single<List<Record>> getAllRecords();
 
     @Query("SELECT * FROM record WHERE id=:id")
